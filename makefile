@@ -1,9 +1,9 @@
-all: proceso.o estructuras.o
-	gcc proceso.o estructuras.o -o proceso
-proceso.o: proceso.c estructuras.h
-	gcc -c proceso.c -o proceso.o
+all: reinas_p.o estructuras.o
+	gcc reinas_p.o estructuras.o -o reinas_p
+reinas_p.o: reinas_p.c estructuras.h
+	gcc -c reinas_p.c -o reinas_p.o
 estructuras.o: estructuras.c estructuras.h
 	gcc -c estructuras.c -o estructuras.o
 
 clean:
-	rm *.o proceso TI_*
+	rm *.o reinas_p TI_*

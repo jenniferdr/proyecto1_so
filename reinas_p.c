@@ -1,14 +1,20 @@
 /*Programa 8 reinas (version procesos).
- * Reporta soluciones existentes para cada posicion
+ * Reporta una solucion existente para cada posicion
  * del tablero. 
  * Se asigna una tarea a cada proceso hijo para encontrar 
- * una solucion para dado tablero con una reina colocada.
+ * una solucion dado un tablero con una reina colocada.
  */   
 #include "8reinas.c"
 #include "estructuras.h"
 #include <string.h>
 FILE *arch;
-void help(int x){printf("Error: %d",x); exit(1);}
+void help(int x){
+  printf("Error: Sintaxis de lainstruccion:\n");
+  printf("\n");
+  printf(" ./reinas_p -n<numero trabajadores>  -i{0|1} \n");
+  printf("\n");
+  exit(1);
+}
 
 main(int argc, char *argv[]){
  

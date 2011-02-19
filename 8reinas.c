@@ -110,7 +110,7 @@ int ok = FALSE;
      if (!ok) {
         // Si no se han podido colocar las demás reinas
         // con la reina actual donde está, la quitamos
-        if(fila!=x && reinas[fila]!=y) reinas[fila] = -1;
+        if(fila!=x || reinas[fila]!=y) reinas[fila] = -1;
 	return ok;
      } 
   

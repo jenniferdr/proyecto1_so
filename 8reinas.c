@@ -126,7 +126,7 @@ int ok = FALSE;
 
 
 
-main(int argc, char *argv[]){
+/*main(int argc, char *argv[]){
   int nreinas=8;
   int *reinas;  // Vector con las posiciones de las reinas de cada fila
   int sol;
@@ -147,3 +147,4 @@ main(int argc, char *argv[]){
   free(reinas);
 }
 
+*/

@@ -60,12 +60,22 @@ main(int argc, char *argv[]){
       // Vector que contendra la ubicacion de las reinas
       reinas = (int*) malloc ( nreinas*sizeof(int) );
 
-      sol=sol_reinas(i%8,i/8,reinas,nreinas);
+      struct timeval start, end;
+      gettimeofday(&start, NULL);
 
+      sol=sol_reinas(i%8,i/8,reinas,nreinas);
+      j=0;     
+      // while(j<40000)j++;
+      gettimeofday(&end, NULL);
+
+       long int tiempo = ((end.tv_sec * 1000000 + end.tv_usec)
+		       - (start.tv_sec * 1000000 + start.tv_usec));
+    
       if(sol){
 	for(j=0;j<8;j++){
 	  fprintf(arch ,"%d\n",reinas[j]);
-	}
+	 }
+		fprintf(arch,"%ld\n",tiempo);
       }else{
 	for(j=0;j<9;j++){
 	  fprintf(arch ,"%d\n",-1);
@@ -92,7 +102,7 @@ main(int argc, char *argv[]){
     sprintf(cadena,"TI_%d_%d",i%8,i/8);
     arch=fopen(cadena,"r");
     if(arch==NULL)perror("No se puede abrir el archivo");
-    for(j=0;j<8;j++){
+    for(j=0;j<9;j++){
       fscanf(arch,"%d",&Soluciones[i][j]);
     }
     fclose(arch);

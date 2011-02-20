@@ -14,7 +14,7 @@ void realizarReporte(int Soluciones[][9],int n){
     solFinales[i]=1;
     numSol[i]=1;
   }
-
+ 
   /* Identificar soluciones con menor tiempo
    * y la cantidad de veces encontrada
    */ 
@@ -61,7 +61,7 @@ int nsol=1;
       printf("\tSolucion %d: ",nsol++); 
 k=0;
       for(j=0;j<n;j++){
-	printf("(%d,%d) ",k++,Soluciones[k][j]);
+	printf("(%d,%d) ",k++,Soluciones[i][k]);
       }
       printf("\n\t\tTiempo minimo: %d mseg.\n",Soluciones[i][8]);
       printf("\t\tNro. de veces encontrada: %d \n",numSol[i]);
@@ -71,7 +71,7 @@ k=0;
 }
 
 main(){
-int n=8,i,j;
+  int n=8,i,j,k=0;
 int Sol[n][9];
 
 for(i=0; i<n;i++){
@@ -79,7 +79,7 @@ for(j=0;j<9;j++){
 Sol[i][j]=2;
 }
 }
-Sol[3][8]=333;
+Sol[3][8]=1;
 Sol[0][4]=9696969;
 
 realizarReporte(Sol,n);

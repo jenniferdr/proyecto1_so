@@ -20,13 +20,13 @@ void realizarReporte(int Soluciones[][9],int n){
    */ 
   for(i=0;i<n;i++){
     if(Soluciones[i][0]==-1 || solFinales[i]==0){
-      //Solucion repetida o no encontrada 
+      //Ignorar solucion repetida o no encontrada 
       solFinales[i]=0;
       numSol[i]=0;
     }else{
-      //Ver si para la primera fila de cada solucion 
+      //Ver si para la primera fila de cada tablero 
       //coincide alguna reina.Si es asi, terminar de 
-      //comparar todas las filas restantes.
+      //comparar el resto de las posiciones.
       for(j=i+1; j<n;j++){
 	if(Soluciones[i][0]==Soluciones[j][0]){
 	  int diferentes=FALSE;

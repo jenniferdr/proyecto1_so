@@ -1,7 +1,10 @@
+// Funciones
+ 
 #define TRUE 1
 #define FALSE 0
 #include <stdlib.h>
 #include <stdio.h>
+
 
 void realizarReporte(int Soluciones[][9],int n){
   int i,j,k;
@@ -54,12 +57,12 @@ void realizarReporte(int Soluciones[][9],int n){
   for(i=0;i<n;i++) total=total + solFinales[i];
   printf("Nro. Total de soluciones diferentes: %d\n",total);
 
-int nsol=1;
+  int nsol=1;
   //Imprimir soluciones
   for(i=0; i<n;i++){ 
     if(solFinales[i]){
       printf("\tSolucion %d: ",nsol++); 
-k=0;
+      k=0;
       for(j=0;j<n;j++){
 	printf("(%d,%d) ",k++,Soluciones[i][k]);
       }
@@ -67,23 +70,8 @@ k=0;
       printf("\t\tNro. de veces encontrada: %d \n",numSol[i]);
     }
   }
-  
 }
 
-main(){
-  int n=8,i,j,k=0;
-int Sol[n][9];
 
-for(i=0; i<n;i++){
-for(j=0;j<9;j++){
-Sol[i][j]=2;
-}
-}
-Sol[3][8]=1;
-Sol[0][4]=9696969;
-
-realizarReporte(Sol,n);
-
-}
 
 

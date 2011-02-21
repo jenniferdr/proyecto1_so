@@ -1,93 +1,19 @@
 /*Programa 8 reinas (version procesos).
  * Reporta una solucion existente para cada posicion
  * del tablero. 
- * Se asigna una tarea a cada proceso hijo para encontrar 
+ * Se asigna una tarea  cada proceso hijo para encontrar 
  * una solucion dado un tablero con una reina colocada.
  */   
-#include "8reinas.c"
+
 #include "estructuras.h"
-#include <string.h>
+
 FILE *arch;
-void help(int x){
-  printf("Error: Sintaxis de lainstruccion:\n");
-  printf("\n");
-  printf(" ./reinas_p -n<numero trabajadores>  -i{0|1} \n");
-  printf("\n");
-  exit(1);
-}
-#define TRUE 1
-#define FALSE 0
-void realizarReporte(int Soluciones[][],int n){
-  int i,j,k;
-  //Soluciones diferentes: solFinales[i]=1 
-  // identifica la solucion con el menor tiempo.
-  int solFinales[n];
-  //Numero de soluciones
-  int numSol[n];
-  for(i=0; i<n;i++){
-    solFinales[i]=1;
-    numSol[i]=1;
-  }
 
-  /* Identificar soluciones con menor tiempo
-   * y la cantidad de veces encontrada
-   */ 
-  for(i=0;i<n;i++){
-    if(Soluciones[i][0]==-1 || solFin[i]==0){
-      //Solucion repetida o no encontrada 
-      solFinales[i]=0;
-      numSol[i]=0;
-    }else{
-      //Ver si para la primera fila de cada solucion 
-      //coincide alguna reina.Si es asi, terminar de 
-      //comparar todas las filas restantes.
-      for(j=i+1; j<n;j++){
-	if(Soluciones[i][0]==Soluciones[j][0]){
-	  int diferentes=FALSE;
-	  for(k=1;k<=8;k++){
-	    if(diferentes=Soluciones[i][k]!=Soluciones[j][k])
-	      break;
-	  }
-	  if(!diferentes){
-	    //Como son iguales, descartar la de mayor tiempo
-	    if(Soluciones[i][9]<=Soluciones[j][9]){
-	      solFinales[j]=0;
-	      numSol[i]++;
-	    }else{
-	      solFinales[i]=0;
-	      numSol[j]=numSol[i]+1;
-	    }
-	  }
-	}
-      }
-    }
-  }
-
-  int total=0; 
-  // Nro de soluciones diferentes encontradas
-  for(i=0;i<n;i++) total=total + solFinales[i];
-  printf("Nro. Total de soluciones diferentes: %d\n",total);
-
-  //Imprimir soluciones
-  for(i=0; i<n;i++){ 
-    if(solFinales[i]){
-      printf(" Solucion %d: ",i+1); 
-      for(j=0;i<n;j++){
-	printf("(%d,%d) ",i,Soluciones[i][j]);
-      }
-      printf("  Tiempo minimo: %d mseg.\n",Soluciones[i][9]);
-      printf("  Nro. de veces encontrada: %d \n",numSol[i]);
-    }
-  }
-  
-}
 main(int argc, char *argv[]){
  
   int n,print;
   print=0;
   n=8;
-
- 
 
   //Comprobar los argumentos
   if(argc==3|| argc==5){
@@ -110,7 +36,7 @@ main(int argc, char *argv[]){
   }
  
   int Soluciones [n][9]; 
-  int i;//i sera las filas
+  int i;// sera las filas
   int j;// las columnas 
   int hijo;
   int padre= getpid();
@@ -134,12 +60,22 @@ main(int argc, char *argv[]){
       // Vector que contendra la ubicacion de las reinas
       reinas = (int*) malloc ( nreinas*sizeof(int) );
 
-      sol=sol_reinas(i%8,i/8,reinas,8);
+      struct timeval start, end;
+      gettimeofday(&start, NULL);
 
+      sol=sol_reinas(i%8,i/8,reinas,nreinas);
+      j=0;     
+      // while(j<40000)j++;
+      gettimeofday(&end, NULL);
+
+       long int tiempo = ((end.tv_sec * 1000000 + end.tv_usec)
+		       - (start.tv_sec * 1000000 + start.tv_usec));
+    
       if(sol){
 	for(j=0;j<8;j++){
 	  fprintf(arch ,"%d\n",reinas[j]);
-	}
+	 }
+		fprintf(arch,"%ld\n",tiempo);
       }else{
 	for(j=0;j<9;j++){
 	  fprintf(arch ,"%d\n",-1);
@@ -166,7 +102,7 @@ main(int argc, char *argv[]){
     sprintf(cadena,"TI_%d_%d",i%8,i/8);
     arch=fopen(cadena,"r");
     if(arch==NULL)perror("No se puede abrir el archivo");
-    for(j=0;j<8;j++){
+    for(j=0;j<9;j++){
       fscanf(arch,"%d",&Soluciones[i][j]);
     }
     fclose(arch);
@@ -174,6 +110,6 @@ main(int argc, char *argv[]){
  
   realizarReporte(Soluciones,n);
 
-}   
+}
 
 

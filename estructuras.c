@@ -1,8 +1,8 @@
 #include "estructuras.h"
 #define TRUE 1
 #define FALSE 0
-
-
+// Archivo de Funciones
+// Funcion para darle una ayuda al usuario sovre argumentos
 
 void help(int x){
   printf("%d",x);
@@ -14,6 +14,7 @@ void help(int x){
 }
 
 
+// Funcion que Realiza Padre/hilo principal, para su tarea
 
 void realizarReporte(int Soluciones[][9],int n){
   int i,j,k;
@@ -83,28 +84,28 @@ k=0;
 }
  
 
-
+// Funcion de los hijos/hilos para imprimir sus soluciones
 void mostrarSolucion (int reinas[], int n,int sol, long int tiempo,int x,int y)
 {
   int i,j;
-  char cad[300]=,"Resultado del hijo:\n Solucion:";
+  char cad[300]="Resultado del hijo:\n Solucion:";
 
-  if(!sol)cad= strcat(cad,"No se encontro.");
-  else{
-    for(i=0;i<n;i++){
-      char par[7];
-      sprintf(par,"(%d,%d)",i,reinas[i]);
-      cad= strcat(cad,par);
-    }
-    cad=strcat(cad,"\n Tiempo: ");
-    char seg[40];
-    sprintf(seg,"%ld mseg. \n Tablero inicial: (%d,%d)\n",tiempo,x,y);
-    cad=strcat(cad,seg);
+  //if(!sol)cad= strcat(cad,"No se encontro.");
+  //else{
+  //for(i=0;i<n;i++){
+  //  char par[7];
+  //  sprintf(par,"(%d,%d)",i,reinas[i]);
+  //  cad= strcat(cad,par);
+  //}
+  //cad=strcat(cad,"\n Tiempo: ");
+  //char seg[40];
+  //sprintf(seg,"%ld mseg. \n Tablero inicial: (%d,%d)\n",tiempo,x,y);
+  //cad=strcat(cad,seg);
     // Imprimir la solucion completa
-    printf("%s",cad);
+    //printf("%s",cad);
 
-
-}
+  
+  //}
 
 /*****************PROBLEMA N REINAS**********************/
 
@@ -119,42 +120,6 @@ void mostrarSolucion (int reinas[], int n,int sol, long int tiempo,int x,int y)
 //   reinas - Vector con las posiciones de las reinas
 //   n      - Número de reinas
 
-
-int comprobar (int fila, int reinas[], int n) 
-{
-  int i;
-
-  for (i=0; i<n; i++){
-    if(i!=fila && reinas[i]!=-1){
-      if (  ( reinas[i]==reinas[fila] )                      // Misma columna
-         || ( abs(fila-i) == abs(reinas[fila]-reinas[i]) ) ) // Misma diagonal
-         return FALSE;
-    }
-  }
-
-  return TRUE;
-}
-
-// int reinas[] apuntador a arreglo
-// Devuelve TRUE si hay solucion, en caso contrario devuelve FALSE
-int sol_reinas(int i,int j,int reinas[],int n){
-  if(i>=n || j>=n)
-    exit(1);
-
- // Inicializar vector:
- // (inicialmente, ninguna reina está colocada)
-  int y;
- for (y=0; y<n; y++)
-   reinas[y] = -1;
-
- // Colocar reina dada en el arreglo 
- reinas[i]= j;
-
- int ok= colocarReina(i,j,0,reinas,n);
-
- return ok;
- 
-}
 
 int colocarReina(int x,int y,int fila,int reinas[],int n){
 int ok = FALSE;
@@ -200,3 +165,43 @@ int ok = FALSE;
 
   return ok;
 }
+}
+
+
+
+int comprobar (int fila, int reinas[], int n) 
+{
+  int i;
+
+  for (i=0; i<n; i++){
+    if(i!=fila && reinas[i]!=-1){
+      if (  ( reinas[i]==reinas[fila] )                      // Misma columna
+         || ( abs(fila-i) == abs(reinas[fila]-reinas[i]) ) ) // Misma diagonal
+         return FALSE;
+    }
+  }
+
+  return TRUE;
+}
+
+// int reinas[] apuntador a arreglo
+// Devuelve TRUE si hay solucion, en caso contrario devuelve FALSE
+int sol_reinas(int i,int j,int reinas[],int n){
+  if(i>=n || j>=n)
+    exit(1);
+
+ // Inicializar vector:
+ // (inicialmente, ninguna reina está colocada)
+  int y;
+ for (y=0; y<n; y++)
+   reinas[y] = -1;
+
+ // Colocar reina dada en el arreglo 
+ reinas[i]= j;
+
+ //int ok= colocarReina(i,j,0,reinas,n);
+
+ //return ok;
+ 
+}
+

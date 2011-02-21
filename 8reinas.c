@@ -134,16 +134,16 @@ int ok = FALSE;
   int nsol=0;
   reinas = (int*) malloc ( nreinas*sizeof(int) );
 
-  // for(i=0; i<nreinas;i++){
-  // for(j=0; j<nreinas; j++){
-      sol= sol_reinas(3,3,reinas,nreinas);
+   //for(i=0; i<nreinas;i++){
+   //for(j=0; j<nreinas; j++){
+      sol= sol_reinas(2,2,reinas,8);
       if(sol){
 	mostrarTablero(reinas,nreinas);
 	nsol++;
-      }    
+      } else printf("no hay");  
       // }
-      // }
-  printf("%d\n",nsol);
+       //}
+  //printf("%d\n",nsol);
   free(reinas);
 }
 

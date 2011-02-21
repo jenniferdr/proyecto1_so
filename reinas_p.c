@@ -11,8 +11,7 @@ FILE *arch;
 
 main(int argc, char *argv[]){
  
-  int n,print;
-  print=0;
+  int n,prt;
   n=8;
 
   //Comprobar los argumentos
@@ -24,9 +23,9 @@ main(int argc, char *argv[]){
 
       if((n=atoi(argv[2]))<=0 || n>64)help(2);
       if(argc==5 && 
-	 (strcmp(argv[3],"-i")!=0 ||(print=atoi(argv[4])!=0 && print!=1) ))help(3);
+	 (strcmp("-i",argv[3])!=0 ||((prt=atoi(argv[4]))!=0 && (prt=atoi(argv[4]))!=1)))help(3);
     }else{
-      if((print=atoi(argv[2]))!=0 && print!=1)help(4);
+      if((prt=atoi(argv[2]))!=0 && prt!=1)help(4);
       if(argc==5 && 
 	 (strcmp(argv[3],"-n")!=0 || (n=atoi(argv[4]))<=0 || n>64))help(5);
     }
@@ -34,13 +33,11 @@ main(int argc, char *argv[]){
   }else{ 
     if(argc!=1)help(6);
   }
- 
-  int Soluciones [n][9]; 
-  int i;// sera las filas
-  int j;// las columnas 
-  int hijo;
-  int padre= getpid();
+  
 
+  int Soluciones [n][9]; 
+  int i,j,hijo; 
+ 
   for(i=0;i<n;++i){
     hijo=fork();
     if (hijo<0){
@@ -64,8 +61,7 @@ main(int argc, char *argv[]){
       gettimeofday(&start, NULL);
 
       sol=sol_reinas(i%8,i/8,reinas,nreinas);
-      j=0;     
-      // while(j<40000)j++;
+   
       gettimeofday(&end, NULL);
 
        long int tiempo = ((end.tv_sec * 1000000 + end.tv_usec)
@@ -75,13 +71,16 @@ main(int argc, char *argv[]){
 	for(j=0;j<8;j++){
 	  fprintf(arch ,"%d\n",reinas[j]);
 	 }
-		fprintf(arch,"%ld\n",tiempo);
+	fprintf(arch,"%ld\n",tiempo);
       }else{
 	for(j=0;j<9;j++){
 	  fprintf(arch ,"%d\n",-1);
 	}
 	  }
-      fclose(arch); 
+      fclose(arch);
+      
+      if(prt)
+	mostrarTablero(reinas,nreinas,sol,tiempo,i%8,i/8); 
       exit(0);
 
     }

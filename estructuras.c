@@ -2,12 +2,10 @@
 #define TRUE 1
 #define FALSE 0
 
-void trabajo(i,j){
-  
 
-}
 
 void help(int x){
+  printf("%d",x);
   printf("Error: Sintaxis de la instruccion:\n");
   printf("\n");
   printf(" ./reinas_p -n<numero trabajadores>  -i{0|1} \n");
@@ -85,29 +83,27 @@ k=0;
 }
  
 
-// Mostrar el tablero con las reinas
-// ---------------------------------
-// Parámetros:
-//   reinas - Vector con las posiciones de las distintas reinas
-//   n      - Número de reinas
 
-void mostrarTablero (int reinas[], int n)
+void mostrarSolucion (int reinas[], int n,int sol, long int tiempo,int x,int y)
 {
   int i,j;
+  char cad[300]=,"Resultado del hijo:\n Solucion:";
 
-  for (i=0; i<n; i++) {
+  if(!sol)cad= strcat(cad,"No se encontro.");
+  else{
+    for(i=0;i<n;i++){
+      char par[7];
+      sprintf(par,"(%d,%d)",i,reinas[i]);
+      cad= strcat(cad,par);
+    }
+    cad=strcat(cad,"\n Tiempo: ");
+    char seg[40];
+    sprintf(seg,"%ld mseg. \n Tablero inicial: (%d,%d)\n",tiempo,x,y);
+    cad=strcat(cad,seg);
+    // Imprimir la solucion completa
+    printf("%s",cad);
 
-      for (j=0; j<n; j++) {
 
-          if (reinas[i]==j)
-             printf("#");
-          else
-             printf("-");
-      }
-
-      printf(" %d %d\n",i,reinas[i]);
-  }
-  printf("\n");
 }
 
 /*****************PROBLEMA N REINAS**********************/

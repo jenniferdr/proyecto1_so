@@ -15,7 +15,72 @@ void help(int x){
   printf("\n");
   exit(1);
 }
+#define TRUE 1
+#define FALSE 0
+void realizarReporte(int Soluciones[][],int n){
+  int i,j,k;
+  //Soluciones diferentes: solFinales[i]=1 
+  // identifica la solucion con el menor tiempo.
+  int solFinales[n];
+  //Numero de soluciones
+  int numSol[n];
+  for(i=0; i<n;i++){
+    solFinales[i]=1;
+    numSol[i]=1;
+  }
 
+  /* Identificar soluciones con menor tiempo
+   * y la cantidad de veces encontrada
+   */ 
+  for(i=0;i<n;i++){
+    if(Soluciones[i][0]==-1 || solFin[i]==0){
+      //Solucion repetida o no encontrada 
+      solFinales[i]=0;
+      numSol[i]=0;
+    }else{
+      //Ver si para la primera fila de cada solucion 
+      //coincide alguna reina.Si es asi, terminar de 
+      //comparar todas las filas restantes.
+      for(j=i+1; j<n;j++){
+	if(Soluciones[i][0]==Soluciones[j][0]){
+	  int diferentes=FALSE;
+	  for(k=1;k<=8;k++){
+	    if(diferentes=Soluciones[i][k]!=Soluciones[j][k])
+	      break;
+	  }
+	  if(!diferentes){
+	    //Como son iguales, descartar la de mayor tiempo
+	    if(Soluciones[i][9]<=Soluciones[j][9]){
+	      solFinales[j]=0;
+	      numSol[i]++;
+	    }else{
+	      solFinales[i]=0;
+	      numSol[j]=numSol[i]+1;
+	    }
+	  }
+	}
+      }
+    }
+  }
+
+  int total=0; 
+  // Nro de soluciones diferentes encontradas
+  for(i=0;i<n;i++) total=total + solFinales[i];
+  printf("Nro. Total de soluciones diferentes: %d\n",total);
+
+  //Imprimir soluciones
+  for(i=0; i<n;i++){ 
+    if(solFinales[i]){
+      printf(" Solucion %d: ",i+1); 
+      for(j=0;i<n;j++){
+	printf("(%d,%d) ",i,Soluciones[i][j]);
+      }
+      printf("  Tiempo minimo: %d mseg.\n",Soluciones[i][9]);
+      printf("  Nro. de veces encontrada: %d \n",numSol[i]);
+    }
+  }
+  
+}
 main(int argc, char *argv[]){
  
   int n,print;
@@ -107,40 +172,8 @@ main(int argc, char *argv[]){
     fclose(arch);
   }
  
-
   realizarReporte(Soluciones,n);
 
-  int i,j;
-  //Soluciones diferentes: solFinales[i]=1 
-  // es la solucion con el menor tiempo.
-  int solFinales[n];
-  for(i=0; i<n;i++) solFinales[i]=1;
-
-  for(i=0;i<n;i++){
-    int p;
-    if((p=Soluciones[i][0])==-1)solFinales[i]=2;
-    else 
-    for(j=i+1;j<n;j++){
-      if(p==Soluciones[j][0]){
-	Buscar las iguales
-      }
-    }
-  }
-  int total=0; 
-  // Contar total de soluciones encontradas
-  for(i=0;i<n;i++){
-    if(Soluciones[i][0]!=-1) total++;
-  }
-  printf("Nro. Total de soluciones diferentes: %d\n",total);
-
- 
-
-  for(i=1; i<=total;i++){ 
-  printf(" Solucion %d: ",i); 
-  
-  printf(" Tiempo minimo: %d mseg.",);
-  printf("Nro. de veces encontrada: %d",);
-  }
-}     
+}   
 
 

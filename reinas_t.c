@@ -9,48 +9,48 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <errno.h>
+  int Soluciones[8][9];
 struct Entrada
 {
 int fila;
-int columna;
 int num; 
 int *reinas;
 int *Soluciones;
 
 };
 
-int crearEntrada(){
+struct Entrada *crearEntrada(){
 
   struct Entrada *E=(struct Entrada *) malloc(sizeof(struct Entrada));
   // Verificar que dio el espacio
   if(E ==NULL){
     printf("no hay suficiente memoria");
-    return -1;
+    return ;
   }
   E->fila=0;
-  E->columna=0;
   E->num=8;
-  E->reinas=(int *)malloc(9*sizeof(int));
-  E->Soluciones=(int *)malloc(8*9*sizeof(int));
-  return 0;
+  E->reinas=(int *)malloc(8*sizeof(int));
+  E->Soluciones=NULL;//(int *)malloc(8*9*sizeof(int));
+  return E;
 } 
 
 //#include "estructuras.h"
-int* trabajo(pasaje){
-  
+int* trabajo(struct Entrada *j){
+  Soluciones[j->num][9];
   int sol;
-  int i;
-  int *reinas;
-  //reinas=pasaje->reinas;
-  //i=(pasaje->fila);
-
-  // sol=sol_reinas(i%8,i/8,reinas,8);
-  printf("%d",pasaje->fila);
-  
-  
-  printf("hola %d \n",pasaje);
-  //printf("hola \n",pthread_self());
-  return;
+  int k;
+  j->Soluciones=Soluciones;
+  sol=sol_reinas(j->fila%8,j->fila/8,j->reinas,8);
+  for(k=0;k<8;k++){
+    
+   Soluciones[j->fila][k]=j->reinas[k];  
+   //printf("%d\n",Soluciones[j->fila][k]);  
+}  
+ 
+  printf("hola %d \n",j->reinas[1]);
+  if (sol==0){
+    return j->reinas;
+  }
 }  
 
 
@@ -62,7 +62,7 @@ main(int argc, char *argv[]){
   int n,print;
   print=0;
   n=8;
-  int Soluciones[n][9];
+
  
 
   //Comprobar los argumentos
@@ -86,21 +86,27 @@ main(int argc, char *argv[]){
   }
 
   int j;
-  pthread_t hilo;
+  pthread_t hilo[n];
   for(j=0;j<n;j++){
+    hilo[j]=(pthread_t)malloc(sizeof(pthread_t));
     struct Entrada *pasaje=NULL;
     pasaje=(struct Entrada*)crearEntrada();
-    pasaje->fila=j%8;
-    pasaje->columna=j/8;
+    pasaje->fila=j;
     pasaje->num=n;
+   
     pasaje->Soluciones=*Soluciones;
-    pthread_create(&hilo,NULL,(void *)trabajo,(void *)pasaje);
-
-    pthread_join(hilo,NULL);
-    
+     
+    pthread_create(&hilo[j],NULL,(void *)trabajo,(void *)pasaje);
+  }
+ 
+  int status;
+  for(j=0;j<n;j++){
+    printf("%d\n",Soluciones[j][1]);  
+    pthread_join(hilo[j],(void*)&status);
+   
   }
 }
     
     
-    
+
  

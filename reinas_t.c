@@ -1,24 +1,16 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <sys/types.h>
-#include <string.h>
-#include <sys/wait.h>
-#include "8reinas.c"
-#include <pthread.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <errno.h>
-  int Soluciones[8][9];
-struct Entrada
-{
-int fila;
-int num; 
-int *reinas;
-int *Soluciones;
+/*Jennifer Dos Reis 08-10323
+ *Juliana Leon 08-10608
+ *Programa 8 reinas (version hilos)
+ * Reporta una solucion existente para cada posicion
+ * del tablero. 
+ * Se asigna una tarea  cada hilo para encontrar 
+ * una solucion dado un tablero con una reina colocada.
+ */
+#include "estructuras.h"
+// Variable Global, matriz de soluciones  
+int Soluciones[8][9];
 
-};
-
+//Funcion para Inicializar los valores la estructura
 struct Entrada *crearEntrada(){
 
   struct Entrada *E=(struct Entrada *) malloc(sizeof(struct Entrada));
@@ -26,35 +18,42 @@ struct Entrada *crearEntrada(){
   if(E ==NULL){
     printf("no hay suficiente memoria");
     return ;
-  }
+  };
+
   E->fila=0;
   E->num=8;
   E->reinas=(int *)malloc(8*sizeof(int));
-  E->Soluciones=NULL;//(int *)malloc(8*9*sizeof(int));
   return E;
 } 
 
-//#include "estructuras.h"
+// funcion que realizar cada hilo
+// medicion del tiempo
+// Copiar los resultados en la variable Global 
 int* trabajo(struct Entrada *j){
-  Soluciones[j->num][9];
   int sol;
   int k;
-  j->Soluciones=Soluciones;
-  sol=sol_reinas(j->fila%8,j->fila/8,j->reinas,8);
-  for(k=0;k<8;k++){
-    
-   Soluciones[j->fila][k]=j->reinas[k];  
-   //printf("%d\n",Soluciones[j->fila][k]);  
-}  
  
-  printf("hola %d \n",j->reinas[1]);
-  if (sol==0){
-    return j->reinas;
+  struct timeval start, end;
+  gettimeofday(&start, NULL);
+  sol=sol_reinas(j->fila%8,j->fila/8,j->reinas,8);
+  gettimeofday(&end, NULL);
+
+  int tiempo = ((end.tv_sec * 1000000 + end.tv_usec)
+		- (start.tv_sec * 1000000 + start.tv_usec));
+
+  if(sol){
+    for(k=0;k<8;k++){
+      Soluciones[j->fila][k]=j->reinas[k];
+    }
+    Soluciones[j->fila][8]=tiempo;
+  }else{
+    for(k=0;k<8;k++){
+      Soluciones[j->fila][k]=-1;
+    }
   }
+  free(j);
+
 }  
-
-
-void help(int x){printf("Error: %d",x); exit(1);}
  
 
 main(int argc, char *argv[]){
@@ -84,7 +83,7 @@ main(int argc, char *argv[]){
   }else{ 
     if(argc!=1)help(6);
   }
-
+  //Creacion de los hilos
   int j;
   pthread_t hilo[n];
   for(j=0;j<n;j++){
@@ -93,20 +92,24 @@ main(int argc, char *argv[]){
     pasaje=(struct Entrada*)crearEntrada();
     pasaje->fila=j;
     pasaje->num=n;
-   
-    pasaje->Soluciones=*Soluciones;
-     
-    pthread_create(&hilo[j],NULL,(void *)trabajo,(void *)pasaje);
+    //Asignacion de Tareas
+    if(pthread_create(&hilo[j],NULL,(void *)trabajo,(void *)pasaje)!=0){
+      perror("fallo un hilo");
+      exit(1);
+    }
+    
   }
- 
+  // Espera Por los hilos
   int status;
   for(j=0;j<n;j++){
-    printf("%d\n",Soluciones[j][1]);  
-    pthread_join(hilo[j],(void*)&status);
-   
+    if (pthread_join(hilo[j],(void*)&status)!=0){
+      perror("fallo un hilo");
+      exit(1);
+    }
   }
-}
-    
-    
 
  
+  // llamada a la funcion para el Reporte del hilo principal
+  realizarReporte(Soluciones,n);
+}
+  

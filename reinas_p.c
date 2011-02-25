@@ -1,4 +1,6 @@
-/*Programa 8 reinas (version procesos).
+/*Jennifer Dos Reis 08-10323
+ *Juliana Leon 08-10608
+ *Programa 8 reinas (version procesos).
  * Reporta una solucion existente para cada posicion
  * del tablero. 
  * Se asigna una tarea  cada proceso hijo para encontrar 
@@ -8,6 +10,8 @@
 #include "estructuras.h"
 
 FILE *arch;
+//void help(int x){printf("Error: %d",x); exit(1);}
+
 
 main(int argc, char *argv[]){
  
@@ -64,23 +68,23 @@ main(int argc, char *argv[]){
    
       gettimeofday(&end, NULL);
 
-       long int tiempo = ((end.tv_sec * 1000000 + end.tv_usec)
-		       - (start.tv_sec * 1000000 + start.tv_usec));
+      long int tiempo = ((end.tv_sec * 1000000 + end.tv_usec)
+			 - (start.tv_sec * 1000000 + start.tv_usec));
     
       if(sol){
 	for(j=0;j<8;j++){
 	  fprintf(arch ,"%d\n",reinas[j]);
-	 }
+	}
 	fprintf(arch,"%ld\n",tiempo);
       }else{
 	for(j=0;j<9;j++){
 	  fprintf(arch ,"%d\n",-1);
 	}
-	  }
+      }
       fclose(arch);
       
-      if(prt)
-	mostrarTablero(reinas,nreinas,sol,tiempo,i%8,i/8); 
+       if(prt)
+      mostrarSolucion(reinas,nreinas,sol,tiempo,i%8,i/8); 
       exit(0);
 
     }
@@ -100,7 +104,7 @@ main(int argc, char *argv[]){
     char cadena[20];
     sprintf(cadena,"TI_%d_%d",i%8,i/8);
     arch=fopen(cadena,"r");
-    if(arch==NULL)perror("No se puede abrir el archivo");
+    if(arch==NULL){perror("No se puede abrir el archivo");}
     for(j=0;j<9;j++){
       fscanf(arch,"%d",&Soluciones[i][j]);
     }
@@ -112,3 +116,73 @@ main(int argc, char *argv[]){
 }
 
 
+
+/*void realizarReporte(int Soluciones[][9],int n){
+  int i,j,k;
+  //Soluciones diferentes: solFinales[i]=1 
+  // identifica la solucion con el menor tiempo.
+  int solFinales[n];
+  //Numero de veces que se repite cada solucion
+  int numSol[n];
+  for(i=0; i<n;i++){
+  solFinales[i]=1;
+  numSol[i]=1;
+  }
+*/
+/* Identificar soluciones con menor tiempo
+ * y la cantidad de veces encontrada
+ */ 
+/*for(i=0;i<n;i++){
+  if(Soluciones[i][0]==-1 || solFinales[i]==0){
+  //Ignorar solucion repetida o no encontrada 
+  solFinales[i]=0;
+  numSol[i]=0;
+  }else{
+  //Ver si para la primera fila de cada tablero 
+  //coincide alguna reina.Si es asi, terminar de 
+  //comparar el resto de las posiciones.
+  for(j=i+1; j<n;j++){
+  if(Soluciones[i][0]==Soluciones[j][0]){
+  int diferentes=FALSE;
+  for(k=1;k<8;k++){
+  if(diferentes=(Soluciones[i][k]!=Soluciones[j][k]))
+  break;
+  }
+  if(!diferentes){
+  //Como son iguales, descartar la de mayor tiempo
+  if(Soluciones[i][8]<=Soluciones[j][8]){
+  solFinales[j]=0;
+  numSol[i]++;
+  }else{
+  solFinales[i]=0;
+  numSol[j]=numSol[i]+1;
+  }
+  }
+  }
+  }
+  }
+  }
+
+  int total=0; 
+  // Nro de soluciones diferentes encontradas
+  for(i=0;i<n;i++) total=total + solFinales[i];
+  printf("Nro. Total de soluciones diferentes: %d\n",total);
+
+  int nsol=1;
+  //Imprimir soluciones
+  for(i=0; i<n;i++){ 
+  if(solFinales[i]){
+  printf("\tSolucion %d: ",nsol++); 
+  k=0;
+  for(j=0;j<8;j++){
+  printf("(%d,%d) ",k++,Soluciones[i][k]);
+  }
+  printf("\n\t\tTiempo minimo: %d mseg.\n",Soluciones[i][8]);
+  printf("\t\tNro. de veces encontrada: %d \n",numSol[i]);
+  }
+  }
+  
+  }
+ 
+ 
+*/

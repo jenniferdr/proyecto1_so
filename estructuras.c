@@ -108,6 +108,7 @@ sprintf(cad,"Respuesta del hilo/hijo: \n Solucion:");
   
 }
 
+
 /*****************PROBLEMA N REINAS**********************/
 
 // Comprobar si una reina está bien colocada
@@ -122,7 +123,9 @@ sprintf(cad,"Respuesta del hilo/hijo: \n Solucion:");
 //   n      - Número de reinas
 
 
-  int colocarReina(int x,int y,int fila,int reinas[],int n){
+
+int colocarReina(int x,int y,int fila,int reinas[],int n){
+
 int ok = FALSE;
 
   if (fila<n) {
@@ -166,7 +169,6 @@ int ok = FALSE;
 
   return ok;
 }
-
 
 
 

@@ -16,8 +16,6 @@ int print;
 int fila;
 int num; 
 int *reinas;
-  
-
 };
 
 extern void help(int x);

@@ -26,9 +26,11 @@ struct Entrada *crearEntrada(){
   return E;
 } 
 
+
 // funcion que realizar cada hilo
 // medicion del tiempo
 // Copiar los resultados en la variable Global 
+
 int* trabajo(struct Entrada *j){
   int sol;
   int k;
@@ -103,7 +105,9 @@ main(int argc, char *argv[]){
   int status;
   for(j=0;j<n;j++){
     if (pthread_join(hilo[j],(void*)&status)!=0){
+
       perror("fallo un hilo");
+
       exit(1);
     }
   }
